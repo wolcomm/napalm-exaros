@@ -18,6 +18,9 @@ Napalm driver for ExaROS.
 Read https://napalm.readthedocs.io for more information.
 """
 
+from __future__ import print_function
+from __future__ import unicode_literals
+
 from napalm_base.base import NetworkDriver
 from napalm_base.exceptions import (
     ConnectionException,

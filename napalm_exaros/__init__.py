@@ -13,4 +13,12 @@
 # the License.
 
 """napalm-exaros package."""
+import pkg_resources
 from exaros import ExaROSDriver
+
+try:
+    __version__ = pkg_resources.get_distribution('napalm-exaros').version
+except pkg_resources.DistributionNotFound:
+    __version__ = "Not installed"
+
+__all__ = ['ExaROSDriver']
