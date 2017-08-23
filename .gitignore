@@ -101,6 +101,3 @@ ENV/
 .mypy_cache/
 
 report.json
-
-# TODO: remove temp entries
-ios.py
