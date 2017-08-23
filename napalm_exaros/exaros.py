@@ -11,23 +11,18 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations under
 # the License.
-
-"""
-Napalm driver for ExaROS.
-
-Read https://napalm.readthedocs.io for more information.
-"""
+"""Napalm driver module for ExaROS."""
 
 from __future__ import print_function
 from __future__ import unicode_literals
 
 from napalm_base.base import NetworkDriver
 from napalm_base.exceptions import (
+    CommandErrorException,
     ConnectionException,
-    SessionLockedException,
     MergeConfigException,
     ReplaceConfigException,
-    CommandErrorException,
+    SessionLockedException,
     )
 
 
@@ -46,9 +41,9 @@ class ExaROSDriver(NetworkDriver):
             optional_args = {}
 
     def open(self):
-        """Implementation of NAPALM method open."""
+        """Open a connection to the device."""
         pass
 
     def close(self):
-        """Implementation of NAPALM method close."""
+        """Close the connection to the device."""
         pass

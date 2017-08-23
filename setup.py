@@ -1,9 +1,11 @@
 """setup.py file."""
 
+
 import uuid
 
-from setuptools import setup, find_packages
 from pip.req import parse_requirements
+
+from setuptools import find_packages, setup
 
 __author__ = 'Ben Maddison <benm@workonline.co.za>'
 

@@ -1,12 +1,13 @@
 """Test fixtures."""
+
 from builtins import super
 
-import pytest
 from napalm_base.test import conftest as parent_conftest
-
 from napalm_base.test.double import BaseTestDouble
 
 from napalm_exaros import exaros
+
+import pytest
 
 
 @pytest.fixture(scope='class')

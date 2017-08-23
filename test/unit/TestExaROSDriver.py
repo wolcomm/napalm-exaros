@@ -16,8 +16,9 @@
 
 import unittest
 
-from napalm_exaros import exaros
 from napalm_base.test.base import TestConfigNetworkDriver
+
+from napalm_exaros import exaros
 
 
 class TestConfigExaROSDriver(unittest.TestCase, TestConfigNetworkDriver):
@@ -33,7 +34,7 @@ class TestConfigExaROSDriver(unittest.TestCase, TestConfigNetworkDriver):
 
         optional_args = {'port': 12443, }
         cls.device = exaros.ExaROSDriver(hostname, username, password, timeout=60,
-                                             optional_args=optional_args)
+                                         optional_args=optional_args)
         cls.device.open()
 
         cls.device.load_replace_candidate(filename='%s/initial.conf' % cls.vendor)
