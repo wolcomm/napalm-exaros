@@ -19,6 +19,7 @@ from __future__ import unicode_literals
 import os
 import socket
 import tempfile
+import uuid
 
 from napalm_base.base import NetworkDriver
 from napalm_base.exceptions import (
@@ -31,8 +32,8 @@ from napalm_base.exceptions import (
     # SessionLockedException,
     )
 from napalm_base.utils import py23_compat
+
 from napalm_exaros.ssh import ExaROSSSH
-from netmiko import SCPConn
 
 MERGE_CONFIG = 'merge'
 REPLACE_CONFIG = 'replace'
@@ -113,7 +114,7 @@ class ExaROSDriver(NetworkDriver):
         return {'is_alive': self.connection.remote_conn.transport.is_active()}
 
     def load_replace_candidate(self, filename=None, config=None):
-        """load replace candidate config file to device."""
+        """Load replace candidate config file to device."""
         try:
             return self._load_candidate(source_file=filename, source_config=config,
                                         operation=REPLACE_CONFIG)
@@ -121,7 +122,7 @@ class ExaROSDriver(NetworkDriver):
             raise ReplaceConfigException(e)
 
     def load_merge_candidate(self, filename=None, config=None):
-        """load merge candidate config file to device."""
+        """Load merge candidate config file to device."""
         try:
             return self._load_candidate(source_file=filename, source_config=config,
                                         operation=MERGE_CONFIG)
@@ -135,7 +136,7 @@ class ExaROSDriver(NetworkDriver):
         return True
 
     def _put_candidate(self, source_file=None, source_config=None):
-        """Transfer file to remote device for either merge or replace operations"""
+        """Transfer file to remote device for either merge or replace operations."""
         if source_file:
             self.connection.scp_put_file(source_file=source_file, dest_file=self.candidate)
             return True

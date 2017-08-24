@@ -44,30 +44,27 @@ class ExaROSSSH(BaseConnection):
         return ""
 
     def check_config_mode(self, check_string=')#', pattern=''):
-        """Check if the device is in configuration mode. Return boolean"""
+        """Check if the device is in configuration mode. Return boolean."""
         if not pattern:
             pattern = re.escape(self.base_prompt[:16])
-        return super(ExaROSSSH, self).check_config_mode(check_string=check_string,
-                                                                  pattern=pattern)
+        return super(ExaROSSSH, self).check_config_mode(check_string=check_string, pattern=pattern)
 
     def config_mode(self, config_command='configure private', pattern=''):
         """Enter into configuration mode on remote device."""
         if not pattern:
             pattern = re.escape(self.base_prompt[:16])
-        return super(ExaROSSSH, self).config_mode(config_command=config_command,
-                                                            pattern=pattern)
+        return super(ExaROSSSH, self).config_mode(config_command=config_command, pattern=pattern)
 
     def exit_config_mode(self, exit_config='abort', pattern=''):
         """Exit configuration mode."""
         if not pattern:
             pattern = re.escape(self.base_prompt[:16])
-        return super(ExaROSSSH, self).exit_config_mode(exit_config=exit_config,
-                                                            pattern=pattern)
+        return super(ExaROSSSH, self).exit_config_mode(exit_config=exit_config, pattern=pattern)
 
     def send_config_set(self, config_commands=None, exit_config_mode=False, **kwargs):
         """Send configuration commands down the SSH channel."""
         return super(ExaROSSSH, self).send_config_set(config_commands=config_commands,
-                                                       exit_config_mode=exit_config_mode, **kwargs)
+                                                      exit_config_mode=exit_config_mode, **kwargs)
 
     def load(self, operation=None, file=None, delay_factor=1):
         """Load the candidate configuration from a file."""
@@ -125,7 +122,7 @@ class ExaROSSSH(BaseConnection):
         check_command = 'commit check'
         is_valid = 'Validation complete'
         output = self.send_command(check_command, strip_prompt=False, strip_command=False,
-                                           delay_factor=delay_factor)
+                                   delay_factor=delay_factor)
         if is_valid not in output:
             raise ValueError("Commit check failed:\n\n{0}".format(output))
 
