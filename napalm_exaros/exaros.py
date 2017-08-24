@@ -17,7 +17,6 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import os
-import scp
 import socket
 import tempfile
 
@@ -25,13 +24,15 @@ from napalm_base.base import NetworkDriver
 from napalm_base.exceptions import (
     # CommandErrorException,
     # ConnectionException,
+    CommitError,
     ConnectionClosedException,
     MergeConfigException,
     ReplaceConfigException,
     # SessionLockedException,
     )
 from napalm_base.utils import py23_compat
-from netmiko import ConnectHandler, SCPConn
+from napalm_exaros.ssh import ExaROSSSH
+from netmiko import SCPConn
 
 MERGE_CONFIG = 'merge'
 REPLACE_CONFIG = 'replace'
@@ -82,13 +83,8 @@ class ExaROSDriver(NetworkDriver):
 
     def open(self):
         """Open a connection to the device."""
-        self.connection = ConnectHandler(device_type='cisco_xr',
-                                         host=self.hostname,
-                                         username=self.username,
-                                         password=self.password,
-                                         **self.netmiko_optional_args)
-        # disable output pagination
-        self._send_command("session paginate disable")
+        self.connection = ExaROSSSH(host=self.hostname, username=self.username,
+                                    password=self.password, **self.netmiko_optional_args)
 
     def close(self):
         """Close the connection to the device."""
@@ -118,54 +114,54 @@ class ExaROSDriver(NetworkDriver):
 
     def load_replace_candidate(self, filename=None, config=None):
         """load replace candidate config file to device."""
-        self.config_replace = True
-        return_status, msg = self._load_candidate(source_file=filename,
-                                                  source_config=config,
-                                                  operation=REPLACE_CONFIG)
-        if not return_status:
-            raise ReplaceConfigException(msg)
+        try:
+            return self._load_candidate(source_file=filename, source_config=config,
+                                        operation=REPLACE_CONFIG)
+        except Exception as e:
+            raise ReplaceConfigException(e)
 
     def load_merge_candidate(self, filename=None, config=None):
         """load merge candidate config file to device."""
-        self.config_replace = False
-        return_status, msg = self._load_candidate(source_file=filename,
-                                                  source_config=config,
-                                                  operation=MERGE_CONFIG)
-        if not return_status:
-            raise MergeConfigException(msg)
+        try:
+            return self._load_candidate(source_file=filename, source_config=config,
+                                        operation=MERGE_CONFIG)
+        except Exception as e:
+            raise MergeConfigException(e)
 
     def _load_candidate(self, source_file=None, source_config=None, operation=MERGE_CONFIG):
-        """Load candidate config"""
-        (return_status, msg) = self._put_candidate(source_file=source_file,
-                                                   source_config=source_config)
-        if return_status:
-            try:
-                self._send_command("configure private")
-                self._send_command("load %s %s" % (operation, self.candidate))
-            except Exception as e:
-                return_status = False
-                msg = e.message
-        return (return_status, msg)
+        """Load candidate config."""
+        self._put_candidate(source_file=source_file, source_config=source_config)
+        self.connection.load(operation=operation, file=self.candidate)
+        return True
 
     def _put_candidate(self, source_file=None, source_config=None):
         """Transfer file to remote device for either merge or replace operations"""
-        return_status = False
-        msg = ''
-        if source_file and source_config:
-            raise ValueError("Cannot simultaneously set source_file and source_config")
+        if source_file:
+            self.connection.scp_put_file(source_file=source_file, dest_file=self.candidate)
+            return True
         if source_config:
             tmp_file = self._create_tmp_file(source_config)
-            (return_status, msg) = self._scp_put_file(source_file=tmp_file,
-                                                      dest_file=self.candidate)
+            self.connection.scp_put_file(source_file=tmp_file, dest_file=self.candidate)
             if tmp_file and os.path.isfile(tmp_file):
                 os.remove(tmp_file)
-        if source_file:
-            (return_status, msg) = self._scp_put_file(source_file=source_file,
-                                                      dest_file=self.candidate)
-        if not return_status:
-            if msg == '':
-                msg = "Transfer to remote device failed"
-        return (return_status, msg)
+            return True
+        raise ValueError("Must provide either source_file or source_config")
+
+    def discard_config(self):
+        """Discard the configuration loaded into the candidate."""
+        self.connection.exit_config_mode()
+
+    def compare_config(self):
+        """Compare the candidate and running configurations."""
+        return self.connection.compare()
+
+    def commit_config(self):
+        """Commit the candidate configuration."""
+        commit_label = "configured using napalm_exaros"
+        try:
+            return self.connection.commit(label=commit_label)
+        except Exception as e:
+            raise CommitError(e)
 
     @staticmethod
     def _create_tmp_file(config):
@@ -176,18 +172,3 @@ class ExaROSDriver(NetworkDriver):
         with open(filename, 'wt') as fobj:
             fobj.write(config)
         return filename
-
-    def _scp_put_file(self, source_file, dest_file):
-        """Put file using SCP"""
-        return_status = False
-        msg = ""
-        try:
-            scp = SCPConn(ssh_conn=self.connection)
-            scp.scp_put_file(source_file=source_file, dest_file=dest_file)
-            return_status = True
-            msg = "SCP transfer successfully completed"
-        except Exception as e:
-            msg = e.message
-        finally:
-            scp.close()
-        return (return_status, msg)
