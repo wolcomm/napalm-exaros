@@ -92,7 +92,7 @@ class ExaROSSSH(BaseConnection):
         self.config_mode()
         output = self.send_command(compare_command, delay_factor=delay_factor)
         if no_changes in output:
-            return None
+            return ""
         return output
 
     def commit(self, comment=None, label=None, delay_factor=1):
