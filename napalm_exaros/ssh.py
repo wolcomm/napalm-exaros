@@ -66,6 +66,19 @@ class ExaROSSSH(BaseConnection):
         return super(ExaROSSSH, self).send_config_set(config_commands=config_commands,
                                                       exit_config_mode=exit_config_mode, **kwargs)
 
+    def get_config(self, store=None, delay_factor=1):
+        """Get configuration store"""
+        delay_factor = self.select_delay_factor(delay_factor)
+        stores = {
+            "running": "show configuration running all",
+            "candidate": "show candidate all"
+        }
+        if store not in stores:
+            raise ValueError("store should be one of {0}".format(stores.iterkeys()))
+        self.config_mode()
+        output = self.send_command(stores[store])
+        return output
+
     def load(self, operation=None, file=None, delay_factor=1):
         """Load the candidate configuration from a file."""
         delay_factor = self.select_delay_factor(delay_factor)

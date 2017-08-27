@@ -173,3 +173,19 @@ class ExaROSDriver(NetworkDriver):
         with open(filename, 'wt') as fobj:
             fobj.write(config)
         return filename
+
+    def get_config(self, retrieve="all"):
+        """Get the device configuration."""
+        stores = ["all", "running", "candidate", "startup"]
+        if retrieve not in stores:
+            raise ValueError("retrieve should be one of {0}".format(stores))
+        output = {
+            "running": "",
+            "candidate": "",
+            "startup": ""
+        }
+        if retrieve in ("all", "running"):
+            output["running"] = self.connection.get_config(store="running")
+        if retrieve in ("all", "candidate"):
+            output["candidate"] = self.connection.get_config(store="candidate")
+        return output
