@@ -1,0 +1,481 @@
+vrf default
+!
+vrf management
+!
+policy route permit-all
+ rule permit-all
+  default-permit
+end-policy
+!
+interface mgmt 0/0/0
+ admin-state down
+!
+interface mgmt 0/0/1
+ admin-state down
+!
+interface mgmt 0/1/0
+ admin-state down
+!
+interface mgmt 0/1/1
+ admin-state down
+!
+interface x-eth 0/0/0
+ admin-state  up
+ description  "-> ar1-lab eth1"
+ ipv4-address 10.1.13.0/31
+ mpls         enable
+ icmpv4       enable
+ icmpv6       enable
+ mtu          9200
+!
+interface x-eth 0/0/1
+ admin-state  down
+ description  "-> ex2-lab x-eth0/0/1"
+ ipv4-address 10.1.12.0/31
+ mpls         enable
+ icmpv4       enable
+ icmpv6       enable
+ mtu          9200
+!
+interface x-eth 0/0/2
+ admin-state  up
+ description  "-> cs1-lab te0/1"
+ ipv4-address 10.2.1.0/31
+ ipv6-address 2001:db8:0:2::1:0/127
+ icmpv4       enable
+ icmpv6       enable
+ mtu          9000
+!
+interface x-eth 0/0/3
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/4
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/5
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/6
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/7
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/8
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/9
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/10
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/11
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/12
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/13
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/14
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/15
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/16
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/17
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/18
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/19
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/20
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/21
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/22
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/23
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/24
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/25
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/26
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/27
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/28
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/29
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/30
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/31
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/32
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/33
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/34
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/35
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/36
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/37
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/38
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/39
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/40
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/41
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/42
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/43
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/44
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/45
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/46
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface x-eth 0/0/47
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface c-eth 0/0/48
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface c-eth 0/0/49
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface c-eth 0/0/50
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface c-eth 0/0/51
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface c-eth 0/0/52
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface c-eth 0/0/53
+ admin-state down
+ icmpv4      enable
+ icmpv6      enable
+!
+interface loopback 0
+ admin-state  up
+ description  ex1-lab-lo0
+ ipv4-address 10.0.0.1/32
+!
+mpls ldp default
+ interface x-eth 0/0/0
+  af-ipv4
+ !
+ interface x-eth 0/0/1
+  af-ipv4
+ !
+!
+system
+ hostname ex1-lab
+ module 0/lc0
+  type        800GigCombo
+  admin-state active
+ !
+ module 0/cpm0
+  admin-state active
+ !
+ module 0/cpm1
+  admin-state active
+ !
+!
+routing common
+ router-id   10.0.0.1
+ as-notation plain
+!
+routing static
+ vrf default
+  af-ipv4 unicast
+   route 10.2.1.1/32 direct-gateway 10.2.1.1 tag 100
+  !
+  af-ipv6 unicast
+   route 2001:db8:0:2::1:1/128 direct-gateway 2001:db8:0:2::1:1 tag 100
+  !
+ !
+!
+routing isis default
+ is-type                      level-2-only
+ net 49.0000.0000.0a00.0001.00
+ ldp-synchronization          enable
+ ldp-synchronization-holdtime 30
+ interface x-eth 0/0/0
+  network      point-to-point
+  circuit-type level-2-only
+  af-ipv4 unicast
+  !
+ !
+ interface x-eth 0/0/1
+  network      point-to-point
+  circuit-type level-2-only
+  af-ipv4 unicast
+  !
+ !
+ interface loopback 0
+  passive enable
+  af-ipv4 unicast
+  !
+ !
+!
+routing bgp 65000
+ bgp path-selection deterministic-med enable
+ bgp extended-asn-capability enable
+ log-neighbor-changes enable
+ vrf default
+  af-ipv4 unicast
+   alternate-path enable
+   multipath ebgp 6
+   multipath ibgp 6
+  !
+  af-ipv4 labeled-unicast
+   redistribute static
+   alternate-path enable
+   multipath ebgp 6
+   multipath ibgp 6
+  !
+  af-ipv6 unicast
+   alternate-path enable
+   multipath ebgp 6
+   multipath ibgp 6
+  !
+  af-ipv6 labeled-unicast
+   redistribute static
+   alternate-path enable
+   multipath ebgp 6
+   multipath ibgp 6
+  !
+  neighbor-group ibgp
+   local-address ipv4 loopback 0
+   !
+   local-address ipv6 loopback 0
+   !
+   remote-as-number 65000
+   af-ipv4 unicast
+    send-community               all
+    inbound-soft-reconfiguration enable
+   !
+   af-ipv4 labeled-unicast
+    next-hop-self                enable
+    send-community               all
+    inbound-soft-reconfiguration enable
+   !
+   af-ipv6 unicast
+    send-community               all
+    inbound-soft-reconfiguration enable
+   !
+   af-ipv6 labeled-unicast
+    next-hop-self                enable
+    send-community               all
+    inbound-soft-reconfiguration enable
+   !
+  !
+  neighbor 10.0.0.2
+   group ibgp
+  !
+  neighbor 10.0.0.3
+   group ibgp
+  !
+  neighbor 10.2.1.1
+   remote-as-number 65101
+   description      ce1
+   af-ipv4 unicast
+    policy in permit-all
+    send-community               all
+    inbound-soft-reconfiguration enable
+   !
+  !
+  neighbor 2001:db8:0:2::1:1
+   remote-as-number 65101
+   description      ce1
+   af-ipv6 unicast
+    send-community               all
+    inbound-soft-reconfiguration enable
+   !
+  !
+ !
+!
+aaa user admin
+ password $1$U4$uyksWEZhyup0h5Jj5126H0
+ role super_admin
+!
+aaa user lab
+ password $1$6FA/QbQ2$Q9NeW949vdqzXwgNtJ2iQ0
+ role super_admin
+!
+aaa user private
+ password $1$kijc$dKzH4A8ID1SApxXcT2O1o1
+ role super_admin
+!
+aaa role priv_admin
+ privilege all
+ exception 1
+  command os-shell
+  action  reject
+ !
+!
+aaa role super_admin
+ privilege all
+!
+log output file syslog
+ filter facility any
+  severity 4-warning
+ !
+ filter facility kernel
+  severity none
+ !
+ filter facility infra
+  severity 5-notice
+ !
+ filter facility infra-utils
+  severity none
+ !
+!
+telnet-server disable
+!end-of-config

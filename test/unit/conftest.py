@@ -4,8 +4,10 @@ from builtins import super
 
 from napalm_base.test import conftest as parent_conftest
 from napalm_base.test.double import BaseTestDouble
+from napalm_base.utils import py23_compat
 
 from napalm_exaros import exaros
+from napalm_exaros.ssh import ExaROSSSH
 
 import pytest
 
@@ -35,24 +37,36 @@ class PatchedExaROSDriver(exaros.ExaROSDriver):
         """Patched ExaROS Driver constructor."""
         super().__init__(hostname, username, password, timeout, optional_args)
 
-        self.patched_attrs = ['device']
-        self.device = FakeExaROSDevice()
+        self.patched_attrs = ['connection']
+        self.connection = FakeExaROSDevice()
+
+    def open(self):
+        """Open a connection to the device."""
+        pass
+
+    def close(self):
+        """Close the connection to the device."""
+        pass
+
+    def is_alive(self):
+        """Return a flag with the state of the SSH connection."""
+        return {'is_alive': True}
 
 
-class FakeExaROSDevice(BaseTestDouble):
+class FakeExaROSDevice(BaseTestDouble, ExaROSSSH):
     """ExaROS device test double."""
 
-    def run_commands(self, command_list, encoding='json'):
-        """Fake run_commands."""
-        result = list()
+    def select_delay_factor(self, delay_factor):
+        """Set dummy delay_factor."""
+        return 1
 
-        for command in command_list:
-            filename = '{}.{}'.format(self.sanitize_text(command), encoding)
-            full_path = self.find_file(filename)
+    def config_mode(self):
+        """Enter into configuration mode."""
+        pass
 
-            if encoding == 'json':
-                result.append(self.read_json_file(full_path))
-            else:
-                result.append({'output': self.read_txt_file(full_path)})
-
-        return result
+    def send_command(self, command, **kwargs):
+        """Fake send_command."""
+        filename = '{}.txt'.format(self.sanitize_text(command))
+        full_path = self.find_file(filename)
+        result = self.read_txt_file(full_path)
+        return py23_compat.text_type(result)
