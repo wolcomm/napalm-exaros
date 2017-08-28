@@ -47,24 +47,29 @@ class ExaROSSSH(BaseConnection):
         """Check if the device is in configuration mode. Return boolean."""
         if not pattern:
             pattern = re.escape(self.base_prompt[:16])
-        return super(ExaROSSSH, self).check_config_mode(check_string=check_string, pattern=pattern)
+        return super(ExaROSSSH, self).check_config_mode(
+            check_string=check_string, pattern=pattern)
 
     def config_mode(self, config_command='configure private', pattern=''):
         """Enter into configuration mode on remote device."""
         if not pattern:
             pattern = re.escape(self.base_prompt[:16])
-        return super(ExaROSSSH, self).config_mode(config_command=config_command, pattern=pattern)
+        return super(ExaROSSSH, self).config_mode(
+            config_command=config_command, pattern=pattern)
 
     def exit_config_mode(self, exit_config='abort', pattern=''):
         """Exit configuration mode."""
         if not pattern:
             pattern = re.escape(self.base_prompt[:16])
-        return super(ExaROSSSH, self).exit_config_mode(exit_config=exit_config, pattern=pattern)
+        return super(ExaROSSSH, self).exit_config_mode(exit_config=exit_config,
+                                                       pattern=pattern)
 
-    def send_config_set(self, config_commands=None, exit_config_mode=False, **kwargs):
+    def send_config_set(self, config_commands=None, exit_config_mode=False,
+                        **kwargs):
         """Send configuration commands down the SSH channel."""
-        return super(ExaROSSSH, self).send_config_set(config_commands=config_commands,
-                                                      exit_config_mode=exit_config_mode, **kwargs)
+        return super(ExaROSSSH, self).send_config_set(
+            config_commands=config_commands, exit_config_mode=exit_config_mode,
+            **kwargs)
 
     def get_config(self, store=None, delay_factor=1):
         """Get configuration store."""
@@ -74,7 +79,8 @@ class ExaROSSSH(BaseConnection):
             "candidate": "show candidate all"
         }
         if store not in stores:
-            raise ValueError("store should be one of {0}".format(stores.iterkeys()))
+            raise ValueError("store should be one of {0}".format(
+                stores.iterkeys()))
         self.config_mode()
         output = self.send_command(stores[store])
         return output
@@ -91,7 +97,8 @@ class ExaROSSSH(BaseConnection):
         load_command = "load {0} {1}".format(operation, file)
         load_success = 'Operation completed successfully'
         self.config_mode()
-        output = self.send_command(load_command, strip_prompt=False, strip_command=False,
+        output = self.send_command(load_command, strip_prompt=False,
+                                   strip_command=False,
                                    delay_factor=delay_factor)
         if load_success not in output:
             raise Exception("Load failed:\n\n{0}".format(output))
@@ -134,7 +141,8 @@ class ExaROSSSH(BaseConnection):
         # Validate the pending changes
         check_command = 'commit check'
         is_valid = 'Validation complete'
-        output = self.send_command(check_command, strip_prompt=False, strip_command=False,
+        output = self.send_command(check_command, strip_prompt=False,
+                                   strip_command=False,
                                    delay_factor=delay_factor)
         if is_valid not in output:
             raise ValueError("Commit check failed:\n\n{0}".format(output))
@@ -142,7 +150,8 @@ class ExaROSSSH(BaseConnection):
         # Commit changes
         no_changes = '% No modifications to commit.'
         commit_complete = 'Commit complete.'
-        output = self.send_command(commit_command, strip_prompt=False, strip_command=False,
+        output = self.send_command(commit_command, strip_prompt=False,
+                                   strip_command=False,
                                    delay_factor=delay_factor)
         if commit_complete not in output:
             if no_changes not in output:

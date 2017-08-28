@@ -33,7 +33,8 @@ def pytest_generate_tests(metafunc):
 class PatchedExaROSDriver(exaros.ExaROSDriver):
     """Patched ExaROS Driver."""
 
-    def __init__(self, hostname, username, password, timeout=60, optional_args=None):
+    def __init__(self, hostname, username, password,
+                 timeout=60, optional_args=None):
         """Patched ExaROS Driver constructor."""
         super().__init__(hostname, username, password, timeout, optional_args)
 

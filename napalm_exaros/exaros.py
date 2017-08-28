@@ -42,7 +42,8 @@ REPLACE_CONFIG = 'replace'
 class ExaROSDriver(NetworkDriver):
     """Napalm driver for ExaROS."""
 
-    def __init__(self, hostname, username, password, timeout=60, optional_args=None):
+    def __init__(self, hostname, username, password,
+                 timeout=60, optional_args=None):
         """Constructor."""
         self.connection = None
         self.hostname = hostname
@@ -85,7 +86,8 @@ class ExaROSDriver(NetworkDriver):
     def open(self):
         """Open a connection to the device."""
         self.connection = ExaROSSSH(host=self.hostname, username=self.username,
-                                    password=self.password, **self.netmiko_optional_args)
+                                    password=self.password,
+                                    **self.netmiko_optional_args)
 
     def close(self):
         """Close the connection to the device."""
@@ -108,15 +110,16 @@ class ExaROSDriver(NetworkDriver):
                 # Try sending ASCII null byte to maintain the connection alive
                 self.connection.send_command(null)
         except (socket.error, EOFError):
-            # If unable to send, we can tell for sure that the connection is unusable,
-            # hence return False.
+            # If unable to send, we can tell for sure that the connection
+            # is unusable, hence return False.
             return {'is_alive': False}
         return {'is_alive': self.connection.remote_conn.transport.is_active()}
 
     def load_replace_candidate(self, filename=None, config=None):
         """Load replace candidate config file to device."""
         try:
-            return self._load_candidate(source_file=filename, source_config=config,
+            return self._load_candidate(source_file=filename,
+                                        source_config=config,
                                         operation=REPLACE_CONFIG)
         except Exception as e:
             raise ReplaceConfigException(e)
@@ -124,25 +127,30 @@ class ExaROSDriver(NetworkDriver):
     def load_merge_candidate(self, filename=None, config=None):
         """Load merge candidate config file to device."""
         try:
-            return self._load_candidate(source_file=filename, source_config=config,
+            return self._load_candidate(source_file=filename,
+                                        source_config=config,
                                         operation=MERGE_CONFIG)
         except Exception as e:
             raise MergeConfigException(e)
 
-    def _load_candidate(self, source_file=None, source_config=None, operation=MERGE_CONFIG):
+    def _load_candidate(self, source_file=None, source_config=None,
+                        operation=MERGE_CONFIG):
         """Load candidate config."""
-        self._put_candidate(source_file=source_file, source_config=source_config)
+        self._put_candidate(source_file=source_file,
+                            source_config=source_config)
         self.connection.load(operation=operation, file=self.candidate)
         return True
 
     def _put_candidate(self, source_file=None, source_config=None):
-        """Transfer file to remote device for either merge or replace operations."""
+        """Transfer file to remote device for merge or replace operations."""
         if source_file:
-            self.connection.scp_put_file(source_file=source_file, dest_file=self.candidate)
+            self.connection.scp_put_file(source_file=source_file,
+                                         dest_file=self.candidate)
             return True
         if source_config:
             tmp_file = self._create_tmp_file(source_config)
-            self.connection.scp_put_file(source_file=tmp_file, dest_file=self.candidate)
+            self.connection.scp_put_file(source_file=tmp_file,
+                                         dest_file=self.candidate)
             if tmp_file and os.path.isfile(tmp_file):
                 os.remove(tmp_file)
             return True

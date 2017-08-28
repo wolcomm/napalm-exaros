@@ -12,13 +12,16 @@ __author__ = 'Ben Maddison <benm@workonline.co.za>'
 install_reqs = parse_requirements('requirements.txt', session=uuid.uuid1())
 reqs = [str(ir.req) for ir in install_reqs]
 
+description = "Network Automation and Programmability Abstraction Layer with \
+    Multivendor support"
+
 setup(
     name="napalm-exaros",
     version="0.1.0",
     packages=find_packages(),
     author="Ben Maddison",
     author_email="benm@workonline.co.za",
-    description="Network Automation and Programmability Abstraction Layer with Multivendor support",
+    description=description,
     classifiers=[
         'Topic :: Utilities',
          'Programming Language :: Python',
