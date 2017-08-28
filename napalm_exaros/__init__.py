@@ -13,7 +13,7 @@
 # the License.
 """napalm-exaros package."""
 
-from exaros import ExaROSDriver
+from napalm_exaros.exaros import ExaROSDriver
 
 import pkg_resources
 
