@@ -67,7 +67,7 @@ class ExaROSSSH(BaseConnection):
                                                       exit_config_mode=exit_config_mode, **kwargs)
 
     def get_config(self, store=None, delay_factor=1):
-        """Get configuration store"""
+        """Get configuration store."""
         delay_factor = self.select_delay_factor(delay_factor)
         stores = {
             "running": "show configuration running all",
