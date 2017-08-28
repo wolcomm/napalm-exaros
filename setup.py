@@ -27,7 +27,7 @@ setup(
         'Operating System :: POSIX :: Linux',
         'Operating System :: MacOS',
     ],
-    url="https://github.com/benmaddison/napalm-exaros",
+    url="https://github.com/wolcomm/napalm-exaros",
     include_package_data=True,
     install_requires=reqs,
 )
